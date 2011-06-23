@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+
+$LOAD_PATH.unshift File.expand_path("../../lib", __FILE__)
+require 'cibass'
+require 'cibass/server'
+
+options = Hash[*ARGV]
+
+# Update config repo
+server = Cibass::Server.new(
+  :working_directory => options['--working-dir'],
+  :config_repository => options['--config'],
+)
+
+Rack::Server.start(
+  :app  => server,
+  :Port => 9999
+)

@@ -55,7 +55,11 @@ matter.
 
 Then start cibass:
 
-    cibass git://path/to/your/config/repo --port 9999
+    # Create a working directory
+    mkdir ~/cibass
+
+    # Start the server
+    cibass --working-dir ~/cibass --config git://path/to/your/config/repo --port 9999
 
 This starts an HTTP server on port 9999 and a background worked that is ready
 for action. To trigger a build, post the commit ref you want to run to the
