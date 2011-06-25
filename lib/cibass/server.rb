@@ -9,6 +9,11 @@ class Cibass
 
   class Server < Sinatra::Base
 
+    configure :test do
+      enable :raise_errors
+      disable :show_exceptions
+    end
+
     attr_reader :opts, :config
 
     def initialize(opts)
