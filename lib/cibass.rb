@@ -1,3 +1,5 @@
+require 'cibass/config'
+
 class Cibass
   def self.configure(&block)
     @config = Config.new

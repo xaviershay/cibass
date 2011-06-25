@@ -4,9 +4,6 @@ require 'cibass'
 
 class Cibass
 
-  class Config
-  end
-
   class Server < Sinatra::Base
 
     configure :test do
