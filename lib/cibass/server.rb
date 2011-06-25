@@ -16,6 +16,7 @@ class Cibass
     def initialize(opts)
       super()
       @opts = opts
+      @current = {}
       setup
     end
 
@@ -26,6 +27,41 @@ class Cibass
 
     get '/' do
       "Cibass"
+    end
+
+    put '/:build/:refspec' do
+      current_project[params[:refspec]] = {
+        state: 'not_started'
+      }
+
+      empty_response 201
+    end
+
+    get '/:build/:refspec/:stage' do
+      {
+        state: current_build[:state]
+      }.to_json
+    end
+
+    put '/:build/:refspec/:stage/succeeded' do
+      current_build.update(
+        state: 'succeeded'
+      )
+
+      empty_response 201
+    end
+
+    def current_project
+      @current.fetch(params[:build]) { not_found }
+    end
+
+    def current_build
+      current_project.fetch(params[:refspec]) { not_found }
+    end
+
+    def empty_response(status_code)
+      status status_code
+      {}.to_json
     end
 
     def update_config
@@ -42,6 +78,10 @@ class Cibass
       Cibass.instance = self
       load config_file
       @config = Cibass.config
+
+      @config.builds.each do |build, _|
+        @current[build.to_s] = {}
+      end
     end
 
     def config_file
