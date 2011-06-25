@@ -25,6 +25,14 @@ class Cibass
       load_config
     end
 
+    not_found do
+      if request.env['CONTENT_TYPE'] == 'application/json'
+        {}.to_json
+      else
+        not_found
+      end
+    end
+
     get '/' do
       "Cibass"
     end
@@ -46,6 +54,14 @@ class Cibass
     put '/:build/:refspec/:stage/succeeded' do
       current_build.update(
         state: 'succeeded'
+      )
+
+      empty_response 201
+    end
+
+    put '/:build/:refspec/:stage/failed' do
+      current_build.update(
+        state: 'failed'
       )
 
       empty_response 201
