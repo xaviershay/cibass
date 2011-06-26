@@ -13,6 +13,7 @@ require_relative 'support/http_session'
 $LOAD_PATH.unshift File.expand_path("../../../lib", __FILE__)
 
 ENV['RACK_ENV'] = 'test'
+require 'cibass/instance'
 require 'cibass/server'
 
 class AcceptanceTest < MiniTest::Unit::TestCase
@@ -28,10 +29,10 @@ class AcceptanceTest < MiniTest::Unit::TestCase
     working = create_working_dir
     config = create_config_repo(config_contents)
 
-    Cibass::Server.new(
+    Cibass::Server.new(Cibass::Instance.new(
       :working_directory => working,
       :config_repository => config
-    )
+    ))
   end
 
   def create_working_dir

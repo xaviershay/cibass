@@ -10,7 +10,7 @@ class SkeletonTest < AcceptanceTest
 
     in_session browser(server) do
       get '/'
-      assert_equal "Cibass", body
+      assert_includes body, "Cibass"
     end
   end
 

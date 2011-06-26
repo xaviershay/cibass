@@ -2,11 +2,11 @@ class Cibass
 
   class Config
 
-    attr_reader :builds
+    attr_reader :projects
 
     def initialize
       @pipelines = []
-      @builds = {}
+      @projects = {}
     end
 
     def create_pipeline(id)
@@ -20,9 +20,9 @@ class Cibass
       pipeline = args[:to]
       build_id = args[:to]
 
-      @builds[build_id] = {
+      @projects[build_id] = {
         repository: repository,
-        pipeline:   pipeline
+        pipeline:   @pipelines.detect {|x| x.id == pipeline }
       }
     end
 
@@ -34,6 +34,10 @@ class Cibass
 
       def add_stage(id)
         @stages[id] = {}
+      end
+
+      def stages
+        @stages.keys
       end
     end
   end
